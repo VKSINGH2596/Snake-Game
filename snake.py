@@ -1,6 +1,11 @@
 from turtle import Turtle, Screen
 import time
 
+UP = 90
+DOWN = 270
+LEFT = 180
+RIGHT = 0
+
 
 class MySnake:
     def __init__(self):
@@ -12,34 +17,40 @@ class MySnake:
         # Creating the Snake body
         x_value = 0
         y_value = 0
-        self.screen.tracer(1)
+        self.screen.tracer(0)    # Used to remove the animation on Turtle when tracer(0)
+        self.snake_parts = []    # List to store the snake Turtle objects
         for _ in range(3):
             new_part = Turtle("square")
             new_part.color("white")
             new_part.penup()
             new_part.setpos(x_value, y_value)
+            self.snake_parts.append(new_part)
             x_value -= 20
 
     def move_up(self):
         """To turn the set the heading head part to north."""
-        self.screen.turtles()[0].setheading(90)
+        if self.snake_parts[0].heading() != DOWN:
+            self.snake_parts[0].setheading(UP)
 
     def move_down(self):
         """To turn the set the heading head part to south."""
-        self.screen.turtles()[0].setheading(270)
+        if self.snake_parts[0].heading() != UP:
+            self.snake_parts[0].setheading(DOWN)
 
     def move_left(self):
         """To turn the set the heading head part to east."""
-        self.screen.turtles()[0].setheading(180)
+        if self.snake_parts[0].heading() != RIGHT:
+            self.snake_parts[0].setheading(LEFT)
 
     def move_right(self):
         """To turn the set the heading head part to west."""
-        self.screen.turtles()[0].setheading(0)
+        if self.snake_parts[0].heading() != LEFT:
+            self.snake_parts[0].setheading(RIGHT)
 
     def snake_movement(self):
         """Method responsible for snake body movement."""
         self.screen.listen()
-        head_part = self.screen.turtles()[0]
+        head_part = self.snake_parts[0]
         self.screen.onkeypress(self.move_up, "Up")
         self.screen.onkeypress(self.move_down, "Down")
         self.screen.onkeypress(self.move_left, "Left")
@@ -49,12 +60,11 @@ class MySnake:
                     or head_part.ycor() >= 300 or head_part.ycor() <= -300:
                 break
             self.screen.update()
-            time.sleep(0.1)
-            turtle_list = self.screen.turtles()
-            for index in range(len(turtle_list) - 1, 0, -1):
-                pos_of_next_element = turtle_list[index - 1].pos()
-                turtle_list[index].setpos(pos_of_next_element)
-            turtle_list[0].forward(20)
+            time.sleep(0.1)         # Used to make the loop sleep i.e. make snake movement slow
+            for index in range(len(self.snake_parts) - 1, 0, -1):
+                pos_of_next_element = self.snake_parts[index - 1].pos()
+                self.snake_parts[index].setpos(pos_of_next_element)
+            self.snake_parts[0].forward(20)
 
         self.screen.bye()
 
