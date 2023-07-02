@@ -9,4 +9,8 @@ class Food(Turtle):
         self.penup()
         self.color("yellow")
         self.speed("fastest")
-        self.goto(r.randint(-280, 280), r.randint(-280, 280))
+        self.goto(r.randint(-14, 14) * 20, r.randint(-14, 14) * 20)
+        # self.goto(280, 60)
+
+    def food_collision(self):
+        self.goto(r.randint(-14, 14) * 20, r.randint(-14, 14) * 20)

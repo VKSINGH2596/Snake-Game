@@ -1,5 +1,4 @@
 from turtle import Turtle, Screen
-import time
 
 UP = 90
 DOWN = 270
@@ -8,13 +7,10 @@ RIGHT = 0
 
 
 class MySnake:
-    def __init__(self):
+    def __init__(self, current_screen):
         """Setting up the game screen and initial snake body."""
-        self.screen = Screen()
-        self.screen.setup(width=600, height=600)
-        self.screen.bgcolor("black")
-        self.screen.title("Snake-Game")
         # Creating the Snake body
+        self.screen = current_screen
         x_value = 0
         y_value = 0
         self.screen.tracer(0)    # Used to remove the animation on Turtle when tracer(0)
@@ -47,24 +43,21 @@ class MySnake:
         if self.snake_parts[0].heading() != LEFT:
             self.snake_parts[0].setheading(RIGHT)
 
+    def add_part(self):
+        new_part = Turtle("square")
+        new_part.color("white")
+        new_part.penup()
+        new_part.setpos(self.snake_parts[-1].pos())
+        self.snake_parts.append(new_part)
+
     def snake_movement(self):
         """Method responsible for snake body movement."""
         self.screen.listen()
-        head_part = self.snake_parts[0]
         self.screen.onkeypress(self.move_up, "Up")
         self.screen.onkeypress(self.move_down, "Down")
         self.screen.onkeypress(self.move_left, "Left")
         self.screen.onkeypress(self.move_right, "Right")
-        while True:
-            if head_part.xcor() >= 300 or head_part.xcor() <= -300 \
-                    or head_part.ycor() >= 300 or head_part.ycor() <= -300:
-                break
-            self.screen.update()
-            time.sleep(0.1)         # Used to make the loop sleep i.e. make snake movement slow
-            for index in range(len(self.snake_parts) - 1, 0, -1):
-                pos_of_next_element = self.snake_parts[index - 1].pos()
-                self.snake_parts[index].setpos(pos_of_next_element)
-            self.snake_parts[0].forward(20)
-
-        self.screen.bye()
-
+        for index in range(len(self.snake_parts) - 1, 0, -1):
+            pos_of_next_element = self.snake_parts[index - 1].pos()
+            self.snake_parts[index].setpos(pos_of_next_element)
+        self.snake_parts[0].forward(20)
