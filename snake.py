@@ -20,24 +20,34 @@ class MySnake:
             new_part.setpos(x_value, y_value)
             x_value -= 20
 
+    def move_up(self):
+        """To turn the set the heading head part to north."""
+        self.screen.turtles()[0].setheading(90)
+
+    def move_down(self):
+        """To turn the set the heading head part to south."""
+        self.screen.turtles()[0].setheading(270)
+
     def move_left(self):
-        """To turn the head part left by 90 angle."""
-        self.screen.turtles()[0].left(90)
+        """To turn the set the heading head part to east."""
+        self.screen.turtles()[0].setheading(180)
 
     def move_right(self):
-        """To turn the head part right by 90 angle."""
-        self.screen.turtles()[0].right(90)
+        """To turn the set the heading head part to west."""
+        self.screen.turtles()[0].setheading(0)
 
     def snake_movement(self):
         """Method responsible for snake body movement."""
         self.screen.listen()
         head_part = self.screen.turtles()[0]
+        self.screen.onkeypress(self.move_up, "Up")
+        self.screen.onkeypress(self.move_down, "Down")
+        self.screen.onkeypress(self.move_left, "Left")
+        self.screen.onkeypress(self.move_right, "Right")
         while True:
             if head_part.xcor() >= 300 or head_part.xcor() <= -300 \
                     or head_part.ycor() >= 300 or head_part.ycor() <= -300:
                 break
-            self.screen.onkeypress(self.move_left, "w")
-            self.screen.onkeypress(self.move_right, "s")
             self.screen.update()
             time.sleep(0.1)
             turtle_list = self.screen.turtles()
