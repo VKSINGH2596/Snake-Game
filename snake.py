@@ -1,5 +1,6 @@
 from turtle import Turtle, Screen
 
+INITIAL_LENGTH = 4
 UP = 90
 DOWN = 270
 LEFT = 180
@@ -15,13 +16,17 @@ class MySnake:
         y_value = 0
         self.screen.tracer(0)    # Used to remove the animation on Turtle when tracer(0)
         self.snake_parts = []    # List to store the snake Turtle objects
-        for _ in range(3):
+        for _ in range(INITIAL_LENGTH):
             new_part = Turtle("square")
             new_part.color("white")
             new_part.penup()
             new_part.setpos(x_value, y_value)
             self.snake_parts.append(new_part)
             x_value -= 20
+
+    def fetch_snake(self):
+        """Returns a List of Current snake body (turtle objects)."""
+        return self.snake_parts
 
     def move_up(self):
         """To turn the set the heading head part to north."""
